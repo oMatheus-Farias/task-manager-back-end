@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres
+    container_name: task-manager-postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_DB: task_manager
+    ports:
+      - '5432:5432'
