@@ -8,13 +8,13 @@ import { UsersRepository } from '../interfaces/users.repository'
 export class UsersPrismaRepository implements UsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll(): Promise<User[]> {
-    throw new Error('Method not implemented.')
-  }
-
-  async findById(userId: string): Promise<User | null> {
-    console.log('userId', userId)
-    throw new Error('Method not implemented.')
+  async findById(
+    userId: string,
+  ): Promise<Pick<User, 'id' | 'name' | 'email'> | null> {
+    return await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, email: true },
+    })
   }
 
   async findByEmail(email: string): Promise<Pick<User, 'id'> | null> {
@@ -29,19 +29,5 @@ export class UsersPrismaRepository implements UsersRepository {
       data,
       select: { id: true },
     })
-  }
-
-  async update(
-    userId: string,
-    data: Prisma.UserUpdateInput,
-  ): Promise<Pick<User, 'id'>> {
-    console.log('userId', userId)
-    console.log('data', data)
-    throw new Error('Method not implemented.')
-  }
-
-  async delete(userId: string): Promise<Pick<User, 'id'>> {
-    console.log('userId', userId)
-    throw new Error('Method not implemented.')
   }
 }
