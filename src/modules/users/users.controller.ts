@@ -22,7 +22,6 @@ export class UsersController {
   }
 
   @Post()
-  @HttpCode(HttpStatus.NO_CONTENT)
   async create(@Body() createUserDto: CreateUserDto) {
     await this.usersService.create(createUserDto)
     return {
