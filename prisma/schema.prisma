@@ -33,7 +33,7 @@ enum TaskStatus {
 model Task {
   id          String     @id @default(uuid()) @db.Uuid
   name        String     @unique @db.VarChar(55)
-  description String     @db.VarChar(255)
+  description String?    @default("") @db.VarChar(255)
   hour        TaskHours
   status      TaskStatus @default(NOT_STARTED)
   createdAt   DateTime   @default(now()) @map("created_at")
