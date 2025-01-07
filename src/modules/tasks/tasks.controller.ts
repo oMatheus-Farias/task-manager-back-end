@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common'
@@ -27,14 +28,13 @@ export class TasksController {
     return this.tasksService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id)
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto)
+  @Patch(':taskId')
+  async update(
+    @Param('taskId', new ParseUUIDPipe()) taskId: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    await this.tasksService.update(taskId, updateTaskDto)
+    return { message: 'Task updated successfully.' }
   }
 
   @Delete(':id')

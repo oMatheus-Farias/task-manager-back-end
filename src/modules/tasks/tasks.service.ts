@@ -13,6 +13,10 @@ export class TasksService {
     private readonly usersRepository: UsersPrismaRepository,
   ) {}
 
+  findAll() {
+    return `This action returns all tasks`
+  }
+
   async create(createTaskDto: CreateTaskDto) {
     const userExists = await this.usersRepository.findById(createTaskDto.userId)
 
@@ -30,17 +34,31 @@ export class TasksService {
     })
   }
 
-  findAll() {
-    return `This action returns all tasks`
-  }
+  async update(taskId: string, updateTaskDto: UpdateTaskDto) {
+    const userExists = await this.usersRepository.findById(updateTaskDto.userId)
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`
-  }
+    if (!userExists) {
+      throw new ConflictException('User not found.')
+    }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    console.log(updateTaskDto)
-    return `This action updates a #${id} task`
+    const taskExists = await this.tasksRepository.findById(taskId)
+
+    if (!taskExists) {
+      throw new ConflictException('Task not found.')
+    }
+
+    const userIsOwner = taskExists.userId === updateTaskDto.userId
+
+    if (!userIsOwner) {
+      throw new ConflictException('User is not the owner of this task.')
+    }
+
+    await this.tasksRepository.update({
+      id: taskId,
+      name: updateTaskDto.name,
+      description: updateTaskDto?.description,
+      hour: updateTaskDto.hour as TaskHours,
+    })
   }
 
   remove(id: number) {
