@@ -35,7 +35,7 @@ model Task {
   name        String     @unique @db.VarChar(55)
   description String     @db.VarChar(255)
   hour        TaskHours
-  status      TaskStatus
+  status      TaskStatus @default(NOT_STARTED)
   createdAt   DateTime   @default(now()) @map("created_at")
   userId      String     @map("user_id") @db.Uuid
 
