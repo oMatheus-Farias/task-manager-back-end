@@ -48,8 +48,12 @@ export class TasksController {
     return { message: 'Task status changed successfully.' }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id)
+  @Delete(':taskId')
+  async remove(
+    @Param('taskId', new ParseUUIDPipe()) taskId: string,
+    @Body('userId', new ParseUUIDPipe()) userId: string,
+  ) {
+    await this.tasksService.remove(taskId, userId)
+    return { message: 'Task removed successfully.' }
   }
 }

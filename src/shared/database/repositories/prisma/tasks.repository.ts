@@ -32,4 +32,8 @@ export class TasksPrismaRepository implements TasksRepository {
       data: { status },
     })
   }
+
+  async remove(taskId: string): Promise<void> {
+    await this.prismaService.task.delete({ where: { id: taskId } })
+  }
 }
