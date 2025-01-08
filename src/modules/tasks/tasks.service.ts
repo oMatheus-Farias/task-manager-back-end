@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common'
-import { TaskHours } from '@prisma/client'
+import { TaskHours, TaskStatus } from '@prisma/client'
 import { TasksPrismaRepository } from 'src/shared/database/repositories/prisma/tasks.repository'
 import { UsersPrismaRepository } from 'src/shared/database/repositories/prisma/users.repository'
 
@@ -59,6 +59,28 @@ export class TasksService {
       description: updateTaskDto?.description,
       hour: updateTaskDto.hour as TaskHours,
     })
+  }
+
+  async changeStatus(userId: string, taskId: string, status: TaskStatus) {
+    const userExists = await this.usersRepository.findById(userId)
+
+    if (!userExists) {
+      throw new ConflictException('User not found.')
+    }
+
+    const taskExists = await this.tasksRepository.findById(taskId)
+
+    if (!taskExists) {
+      throw new ConflictException('Task not found.')
+    }
+
+    const userIsOwner = taskExists.userId === userId
+
+    if (!userIsOwner) {
+      throw new ConflictException('User is not the owner of this task.')
+    }
+
+    await this.tasksRepository.changeStatus(taskId, status)
   }
 
   remove(id: number) {

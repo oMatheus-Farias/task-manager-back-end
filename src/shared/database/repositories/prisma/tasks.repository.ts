@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Prisma, Task } from '@prisma/client'
+import { Prisma, Task, TaskStatus } from '@prisma/client'
 
 import { PrismaService } from '../../prisma.service'
 import { TasksRepository } from '../interfaces/tasks.repository'
@@ -23,6 +23,13 @@ export class TasksPrismaRepository implements TasksRepository {
     await this.prismaService.task.update({
       where: { id: data.id as string },
       data,
+    })
+  }
+
+  async changeStatus(taskId: string, status: TaskStatus): Promise<void> {
+    await this.prismaService.task.update({
+      where: { id: taskId },
+      data: { status },
     })
   }
 }

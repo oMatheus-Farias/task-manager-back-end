@@ -7,7 +7,9 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common'
+import { TaskStatus } from '@prisma/client'
 
 import { CreateTaskDto } from './dto/create-task.dto'
 import { UpdateTaskDto } from './dto/update-task.dto'
@@ -35,6 +37,15 @@ export class TasksController {
   ) {
     await this.tasksService.update(taskId, updateTaskDto)
     return { message: 'Task updated successfully.' }
+  }
+
+  @Put(':taskId/status')
+  async changeStatus(
+    @Param('taskId', new ParseUUIDPipe()) taskId: string,
+    @Body() { userId, status }: { userId: string; status: TaskStatus },
+  ) {
+    await this.tasksService.changeStatus(userId, taskId, status)
+    return { message: 'Task status changed successfully.' }
   }
 
   @Delete(':id')
