@@ -31,13 +31,13 @@ enum TaskStatus {
 }
 
 model Task {
-  id          String     @id @default(uuid()) @db.Uuid
-  name        String     @unique @db.VarChar(55)
-  description String?    @default("") @db.VarChar(255)
+  id          String      @id @default(uuid()) @db.Uuid
+  name        String      @unique @db.VarChar(55)
+  description String?     @default("") @db.VarChar(255)
   hour        TaskHours
-  status      TaskStatus @default(NOT_STARTED)
-  createdAt   DateTime   @default(now()) @map("created_at")
-  userId      String     @map("user_id") @db.Uuid
+  status      TaskStatus? @default(NOT_STARTED)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  userId      String      @map("user_id") @db.Uuid
 
   user User @relation(fields: [userId], references: [id])
 
