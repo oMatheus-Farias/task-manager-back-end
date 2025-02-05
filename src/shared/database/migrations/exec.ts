@@ -1,12 +1,14 @@
-import fs from 'fs'
-import path from 'path'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
+import { pool } from '../pg-config/pg-helper'
 
 async function execMigration() {
-  const client = await this.pool.connect()
+  const client = await pool.connect()
 
   try {
-    const filePath = path.join(__dirname, '00-init.sql')
-    const script = fs.readFileSync(filePath, 'utf-8')
+    const filePath = join(__dirname, '00-init.sql')
+    const script = readFileSync(filePath, 'utf-8')
 
     await client.query(script)
     console.log('Migration executed successfully')
