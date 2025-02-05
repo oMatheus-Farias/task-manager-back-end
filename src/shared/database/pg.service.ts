@@ -4,7 +4,7 @@ import { pool } from '../config/pool.config'
 
 @Injectable()
 export class PgService {
-  async query(query: string, params: any[] = []) {
+  async query<T>(query: string, params: any[] = []): Promise<T[]> {
     const client = await pool.connect()
     try {
       const results = await client.query(query, params)
