@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-import { pool } from '../pg-config/pg-helper'
+import { pool } from '../../config/pool.config'
 
 async function execMigration() {
   const client = await pool.connect()
