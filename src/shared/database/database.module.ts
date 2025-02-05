@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 
-import { PrismaService } from './prisma.service'
+import { PgService, PrismaService } from './'
 import {
   TasksPrismaRepository,
   UsersPrismaRepository,
@@ -8,7 +8,12 @@ import {
 
 @Global()
 @Module({
-  providers: [PrismaService, UsersPrismaRepository, TasksPrismaRepository],
+  providers: [
+    PgService,
+    PrismaService,
+    UsersPrismaRepository,
+    TasksPrismaRepository,
+  ],
   exports: [UsersPrismaRepository, TasksPrismaRepository],
 })
 export class DatabaseModule {}
