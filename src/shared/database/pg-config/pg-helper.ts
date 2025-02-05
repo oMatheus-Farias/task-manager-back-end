@@ -1,8 +1,6 @@
-import pg from 'pg'
+import { Pool } from 'pg'
 
 import { env } from '../../config/env'
-
-const { Pool } = pg
 
 export const pool = new Pool({
   user: env.dbUser,
